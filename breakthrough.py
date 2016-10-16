@@ -4,8 +4,12 @@ import timeit
 import sys
 import pdb
 
+
+
+
 class Game(object):
 
+	#some private variables; could add more
 	height = 8
 	width = 8
 	size = 64
@@ -21,6 +25,21 @@ class Game(object):
 			else:
 				setup.append(Piece("white"))
 		self.board = np.array(setup).reshape(8,8)
+
+	def getPiece(self, x, y):
+		# (0,0) = piece at top-left corner
+		i = y
+		j = x
+		return self.board[i][j]
+
+	def moveF(self, piece):
+		print ''
+
+	def moveL(self, piece):
+		print ''
+
+	def moveR(self, piece):
+		print ''
 
 
 	def printBoard(self):
@@ -38,11 +57,14 @@ class Game(object):
 
 class Piece(object):
 
+	#This class will obviously have more private variables and methods. Still trying to figure out
+	#	logistics of part :/
 	color = ""
-	
+	#value = 0
 
 	def __init__(self, color):
 		self.color = color
+
 
 
 
