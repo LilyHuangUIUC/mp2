@@ -3,6 +3,7 @@ import heapq
 import timeit
 import sys
 import pdb
+import copy
 
 
 
@@ -17,30 +18,47 @@ class Game(object):
 
 	def __init__(self):
 		setup = []
-		for i in range(self.size):
-			if i < 16:
-				setup.append(Piece("black"))
-			elif i >= 16 and i < 48:
-				setup.append(Piece(""))
-			else:
-				setup.append(Piece("white"))
+		for i in range(self.height):
+			for j in range(self.width):
+				if i < 2:
+					setup.append(Piece("black", j, i))
+				elif i > 5:
+					setup.append(Piece("white", j, i))
+				else:
+					setup.append(Piece("", j, i))
 		self.board = np.array(setup).reshape(8,8)
 
 	def getPiece(self, x, y):
 		# (0,0) = piece at top-left corner
+		# (0,7) = piece at bottom-left corner
+		# (7,0) = piece at top-right corner
 		i = y
 		j = x
 		return self.board[i][j]
 
 	def moveF(self, piece):
-		print ''
+		x = piece.xpos
+		y = piece.ypos
+		#move a piece forward
+		if((piece.color == "white") and ((y - 1) >= 0) and (self.getPiece(x, y - 1).color == "")):
+			#moving "up" board
+			movedPiece = copy.deepcopy(self.getPiece(x, y))
+			self.board[y][x] = Piece("", x, y)	#make this moved from cell "empty"
+			self.board[y-1][x] = movedPiece
+		elif ((piece.color == "black") and ((y + 1) < 8) and (self.getPiece(x, y + 1).color == "")):
+			#TODO: move "down" board
+			print ''
+		else:
+			print "You tried to move forward a non-existent piece! (or moving forward is illegal)"
+		return
 
 	def moveL(self, piece):
-		print ''
+		#TODO: move a piece forward-left
+		return
 
 	def moveR(self, piece):
-		print ''
-
+		#TODO: move a piece forward-right
+		return
 
 	def printBoard(self):
 		for i in range(self.height):
@@ -50,7 +68,7 @@ class Game(object):
 				elif game.board[i][j].color == "white":
 					print 'W',
 				else:
-					print ' ',
+					print '.',
 			print ''
 
 
@@ -60,14 +78,31 @@ class Piece(object):
 	#This class will obviously have more private variables and methods. Still trying to figure out
 	#	logistics of part :/
 	color = ""
-	#value = 0
+	xpos = 0
+	ypos = 0
+	value = 0
 
-	def __init__(self, color):
+	def __init__(self, color, x, y):
 		self.color = color
+		self.xpos = x
+		self.ypos = y
+
+	def copy(self, other):
+		self.color = other.color
+		self.xpos = other.xpos
+		self.ypos = other.ypos
+
+	def evalValue(self):
+		#TODO: write function(s) to determine the next favorable piece to move
+		return
 
 
 
 
 '''Main function routine'''
 game = Game()
+game.printBoard()
+print '\n\nAfter moving one piece forward...'
+tempPiece = game.getPiece(6,6)
+game.moveF(tempPiece)
 game.printBoard()
