@@ -18,6 +18,7 @@ class Game(object):
 
 	def __init__(self):
 		setup = []
+		#we begin by initialize the start of the board
 		for i in range(self.height):
 			for j in range(self.width):
 				if i < 2:
@@ -26,20 +27,24 @@ class Game(object):
 					setup.append(Piece("white", j, i))
 				else:
 					setup.append(Piece("", j, i))
+		#we represent the board as a 2D-array
 		self.board = np.array(setup).reshape(8,8)
 
 	def getPiece(self, x, y):
 		# (0,0) = piece at top-left corner
 		# (0,7) = piece at bottom-left corner
 		# (7,0) = piece at top-right corner
+		'''I think the placement of the "x" and "y" parameters may make calling cell positions
+				a little confusing. Might consider switching these placements to be more consistent
+					(i.e. --> getPiece(self, y, x)  OR getPiece(self, col, row)) but idk...'''
 		i = y
 		j = x
 		return self.board[i][j]
 
 	def moveF(self, piece):
+		#move a piece forward
 		x = piece.xpos
 		y = piece.ypos
-		#move a piece forward
 		if((piece.color == "white") and ((y - 1) >= 0) and (self.getPiece(x, y - 1).color == "")):
 			#moving "up" board
 			movedPiece = copy.deepcopy(self.getPiece(x, y))
@@ -76,7 +81,7 @@ class Game(object):
 class Piece(object):
 
 	#This class will obviously have more private variables and methods. Still trying to figure out
-	#	logistics of part :/
+	#	logistics and possible heuristics for part 2 :/
 	color = ""
 	xpos = 0
 	ypos = 0
@@ -95,6 +100,8 @@ class Piece(object):
 	def evalValue(self):
 		#TODO: write function(s) to determine the next favorable piece to move
 		return
+
+	#feel free to add more stuff idk
 
 
 
